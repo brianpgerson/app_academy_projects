@@ -1,14 +1,16 @@
 class ContactsController < ApplicationController
   def index
-    render json: Contact.all
+    contacts = Contact.where("contacts.user_id = #{params[:user_id]}")
+    .concat(User.find(params[:user_id]).shared_contacts).uniq
+    render json: contacts
   end
 
   def show
-    render json: Contact.find(contact_params)
+    render json: Contact.find(params[:id])
   end
 
   def update
-    contact = Contact.find(params.require(:id))
+    contact = Contact.find(params[:id])
     if contact.update(contact_params)
       render json: contact
     else
@@ -26,14 +28,14 @@ class ContactsController < ApplicationController
   end
 
   def destroy
-    contact = Contact.find(params.require(:id))
+    contact = Contact.find(params[:id])
     contact.destroy
     render json: contact
   end
 
   private
   def contact_params
-    params.require(:contact).permit(:email, :name, :user_id, :id)
+    params.require(:contact).permit(:email, :name, :user_id)
   end
 
 end
