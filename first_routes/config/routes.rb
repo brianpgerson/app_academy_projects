@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :users, only: [:index, :show, :update, :destroy, :create]
-  resources :contacts, only: [:index, :show, :update, :destroy, :create]
+  resources :users, only: [:index, :show, :update, :destroy, :create] do
+    resources :contacts, only: [:index]
+  end
+  resources :contacts, only: [:show, :update, :destroy, :create]
+  resources :contact_shares, only: [:create, :destroy]
+end
   # get 'users/:id' => 'users#show'
   # get 'users' => 'users#index'
   # post 'users' => 'users#create'
@@ -64,4 +68,3 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-end
