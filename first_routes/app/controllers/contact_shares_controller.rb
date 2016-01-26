@@ -1,4 +1,4 @@
-class ContactSharesController < ActiveRecord::Base
+class ContactSharesController < ApplicationController
 
   def destroy
     cs = ContactShare.find(contact_shares_params.require(:id))
