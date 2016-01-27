@@ -11,9 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126185156) do
+ActiveRecord::Schema.define(version: 20160126230613) do
 
-  create_table "cat_tables", force: :cascade do |t|
+  create_table "cat_rental_requests", force: :cascade do |t|
+    t.integer "cat_id",                         null: false
+    t.date    "start_date",                     null: false
+    t.date    "end_date",                       null: false
+    t.string  "status",     default: "PENDING", null: false
+  end
+
+  add_index "cat_rental_requests", ["cat_id"], name: "index_cat_rental_requests_on_cat_id"
+
+  create_table "cats", force: :cascade do |t|
     t.date     "birthdate",             null: false
     t.string   "color",                 null: false
     t.string   "name",                  null: false
