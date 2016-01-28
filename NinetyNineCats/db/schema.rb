@@ -11,21 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127213656) do
+ActiveRecord::Schema.define(version: 20160128015859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cat_rental_requests", force: true do |t|
-    t.integer  "cat_id",     null: false
-    t.date     "end_date",   null: false
-    t.date     "start_date", null: false
-    t.string   "status",     null: false
+    t.integer  "cat_id",       null: false
+    t.date     "end_date",     null: false
+    t.date     "start_date",   null: false
+    t.string   "status",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "requester_id", null: false
   end
 
   add_index "cat_rental_requests", ["cat_id"], name: "index_cat_rental_requests_on_cat_id", using: :btree
+  add_index "cat_rental_requests", ["requester_id"], name: "index_cat_rental_requests_on_requester_id", using: :btree
 
   create_table "cats", force: true do |t|
     t.date     "birth_date",            null: false
@@ -35,7 +37,10 @@ ActiveRecord::Schema.define(version: 20160127213656) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "owner_id",              null: false
   end
+
+  add_index "cats", ["owner_id"], name: "index_cats_on_owner_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string "user_name",       null: false
@@ -48,4 +53,3 @@ ActiveRecord::Schema.define(version: 20160127213656) do
   add_index "users", ["user_name"], name: "index_users_on_user_name", unique: true, using: :btree
 
 end
-# TODO fix that index on user password_digest

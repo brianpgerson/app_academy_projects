@@ -24,5 +24,6 @@
   </tr>
   <% @cat.rental_requests.order("start_date").each do |req| %>
     <%= render "req_tr", req: req %>
+    <p>Requested By: <%= User.find(req.requester_id).user_name.capitalize! %> =></p>
   <% end %>
 </table>

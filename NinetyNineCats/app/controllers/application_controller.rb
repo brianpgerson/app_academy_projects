@@ -11,6 +11,16 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by_session_token(session[:session_token])
   end
 
+
+  def is_cats_owner?
+    cat = params[:controller] == "cats" ? Cat.find(params[:id]) : current_cat
+    unless current_user.cats.include?(cat)
+      flash[:notice] = "Please log in to edit a cat."
+      redirect_to cats_url
+    end
+  end
+
+
   def login_user!(user)
     user.reset_session_token!
     flash[:notice] = "Success!"
@@ -22,3 +32,10 @@ class ApplicationController < ActionController::Base
     redirect_to cats_url unless current_user.nil?
   end
 end
+
+  def is_logged_in?
+    if current_user.nil?
+      flash[:notice] = "Please log in to create a cat."
+      redirect_to cats_url
+    end
+  end
