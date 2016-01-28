@@ -1,4 +1,7 @@
 class CatsController < ApplicationController
+  before_action :is_logged_in?, only: [:create, :new, :update, :edit]
+  before_action :is_cats_owner?, only: [:update, :edit]
+
   def index
     @cats = Cat.all
     render :index
@@ -16,6 +19,7 @@ class CatsController < ApplicationController
 
   def create
     @cat = Cat.new(cat_params)
+    @cat.owner_id = current_user.id
     if @cat.save
       redirect_to cat_url(@cat)
     else
@@ -23,6 +27,8 @@ class CatsController < ApplicationController
       render :new
     end
   end
+
+  # TODO: add flash error for no login create
 
   def edit
     @cat = Cat.find(params[:id])
@@ -41,8 +47,9 @@ class CatsController < ApplicationController
 
   private
 
+
   def cat_params
     params.require(:cat)
-      .permit(:age, :birth_date, :color, :description, :name, :sex)
+      .permit(:age, :birth_date, :color, :description, :owner_id, :name, :sex)
   end
 end

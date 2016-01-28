@@ -3,6 +3,18 @@ require 'bcrypt'
 class User < ActiveRecord::Base
   attr_reader :password
 
+  has_many :cats,
+    foreign_key: :owner_id,
+    primary_key: :id,
+    class_name: "Cat"
+
+  has_many :cat_rental_requests,
+    foreign_key: :requester_id,
+    primary_key: :id,
+    class_name: "CatRentalRequest"
+
+
+
   validates :user_name, :password_digest, :session_token, presence: true
   validates :user_name, :session_token, uniqueness: true
   validates :password, length: {minimum: 6}, allow_nil: true
