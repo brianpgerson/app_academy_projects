@@ -48,3 +48,4 @@ ActiveRecord::Schema.define(version: 20160127213656) do
   add_index "users", ["user_name"], name: "index_users_on_user_name", unique: true, using: :btree
 
 end
+# TODO fix that index on user password_digest
