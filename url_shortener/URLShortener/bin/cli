@@ -1,0 +1,30 @@
+require 'launchy'
+
+puts "Please input your email, my good sir!"
+email = gets.chomp
+if User.exists?(email: email)
+  user = User.find_by(email: email)
+else
+  user = User.create!(email: email)
+end
+
+puts "What should we do, master?"
+puts "0: Create a shortened url? orrrrr,"
+puts "1: Visit a shortened url."
+choice = gets.chomp
+
+if choice == "0"
+  puts "By all means, give me your URL:\n>>"
+  long_url = gets.chomp
+  shawty = ShortenedUrl.create_for_user_and_long_url!(user, long_url)
+  puts "#{shawty.short_url} is your shortened URL. ENJOY!"
+else
+  puts "Type in your abysmally formatted shortened URL, you inhuman monster:"
+  dumb_thing = gets.chomp
+  found_url = ShortenedUrl.find_by(short_url: dumb_thing)
+  puts "Okay...here we gooooooo........to.....#{found_url.long_url}"
+  Launchy.open("http://#{found_url.long_url}")
+end
+
+
+# Visit.record_visit!(user, shawty)
