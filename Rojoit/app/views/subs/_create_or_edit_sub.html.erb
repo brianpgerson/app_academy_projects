@@ -1,0 +1,17 @@
+<% action_url = (sub.persisted?) ? edit_sub_url : subs_url %>
+<% route_method = (sub.persisted?) ? 'edit' : 'post' %>
+
+<% button_name = (sub.persisted?) ? "Edit Dat Sub" : "Submit That Sub" %>
+<form action="<%= action_url %>" method="post">
+  <%= auth_token %>
+  <input type="hidden" name="_method" value="<%=route_method%>">
+
+  <p><label for= "title">Sub Title</label></p>
+  <p><input type="text" id="title" name="sub[title]" value="<%= sub.title %>"></p>
+
+  <p><label for= "description">Description</label></p>
+  <p><input type="text" id="description" name="sub[description]" value="<%= sub.description %>"></p>
+
+  <input type="submit" value= '<%= button_name %>'>
+
+</form>
