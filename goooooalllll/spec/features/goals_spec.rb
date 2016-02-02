@@ -9,26 +9,32 @@ feature "creating a goal" do
     expect(page).to have_content "Must be logged in to create a goal"
   end
 
-  scenario "when logged in" do
+  feature "when logged in" do
 
-    it "takes you to create goal page" do
+    scenario "takes you to create goal page" do
       sign_in_and_create_goal
       expect(page).to have_content("Create a New Goal")
     end
 
-    it "takes you to create goal page" do
+    scenario "takes you to create goal page" do
       sign_in_and_create_goal
       expect(page).to have_content("Create a New Goal")
     end
 
-    it "creates a goal" do
+    scenario "creates a goal" do
       sign_in_and_create_goal
       fill_in 'title', with: 'Lose Weight'
       fill_in 'description', with: 'In two weeks, lose 50 pounds by only eating popcorn'
-      
+      click_on 'Create Goal'
+      expect(page).to have_content("Wow, what a noble goal")
     end
 
-
+    scenario "fails an invalid goal" do
+      sign_in_and_create_goal
+      fill_in 'description', with: 'In two weeks, lose 50 pounds by only eating popcorn'
+      click_on 'Create Goal'
+      expect(page).to have_content("Title can't be blank")
+    end
   end
 end
 

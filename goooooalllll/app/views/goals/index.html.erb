@@ -1,5 +1,6 @@
 <h1>Goals</h1>
 
+  <%= button_to "Create Goal", new_goal_url, method: :get %>
 <% unless current_user.nil? %>
   <%= button_to "Sign Out", session_url, method: :delete %>
 <% else %>

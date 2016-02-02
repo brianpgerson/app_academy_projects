@@ -24,7 +24,9 @@ RSpec.describe User, :type => :model do
   end
 
   describe "User" do
-    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:username) }
+    it { should validate_presence_of(:password_digest) }
+    it { should validate_presence_of(:session_token) }
   end
 
   context "when password is too short" do

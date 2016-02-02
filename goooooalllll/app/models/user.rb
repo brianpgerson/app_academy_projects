@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 6}, allow_nil: true
   validates :session_token, :username, :password_digest, presence: true
   attr_reader :password
+
+  has_many :goals
+
   after_initialize :ensure_session_token
 
   def password=(password)

@@ -4,13 +4,13 @@ require 'rails_helper'
 feature "the signup process" do
 
 
-  scenario "has a new user page" do
+  it "has a new user page" do
     visit new_user_url
     expect(page).to have_content "Create A New User"
   end
 
 
-  feature "signing up a user" do
+  feature "signing up a userz" do
     before :each do
       sign_up
     end
@@ -37,7 +37,6 @@ feature "logging in" do
 
   scenario "shows username on the homepage after login" do
     sign_in
-    save_and_open_page
     expect(page).to have_content "barkley"
   end
 
@@ -57,7 +56,7 @@ feature "logging out" do
   end
 
   it "doesn't show username on the homepage after logout" do
-    sign_in
+    sign_up
     visit goals_url
     click_on "Sign Out"
     expect(page).not_to have_content("barkley")
