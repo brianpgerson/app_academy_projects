@@ -23,7 +23,9 @@ RSpec.describe User, :type => :model do
     end
   end
 
-
+  describe "User" do
+    it { should validate_presence_of(:name) }
+  end
 
   context "when password is too short" do
     it "should require that password.length > 6" do

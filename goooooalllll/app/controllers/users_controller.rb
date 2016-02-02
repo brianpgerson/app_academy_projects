@@ -7,8 +7,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       login!(@user)
-      flash[:notice] = ["Logged in, #{@user.username}!"]
-      #TODO redirect somwehre
+      flash[:notice] = "Logged in, #{@user.username}!"
+      redirect_to goals_url
     else
       flash.now[:errors] = @user.errors.full_messages
       @user = User.new(user_params)

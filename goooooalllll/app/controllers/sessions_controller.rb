@@ -6,8 +6,9 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by_credentials(user_params[:username], user_params[:password])
     if @user
-      login(@user)
-      redirect_to #TODO
+      login!(@user)
+      flash[:notice]= "Welcome #{@user.username}!! Thanks for logging in!"
+      redirect_to goals_url
     else
       flash.now[:errors] = 'Invalid combination of username and password'
       @user = User.new(user_params)
@@ -16,8 +17,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    logout
-    redirect_to new_session_url
+    logout!
+    redirect_to goals_url
   end
 
   private
