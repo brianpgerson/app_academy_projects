@@ -13,7 +13,7 @@ function Lamp() {
 
 var turnOn = function() {
    console.log("Turning on " + this.name);
-}
+};
 
 var lamp = new Lamp();
 
