@@ -1,0 +1,9 @@
+<% action_url = (source == :session) ? session_url : users_url %>
+<form action="<%= action_url %>" method="post">
+    <%= auth_token %>
+    <p><label for="user[email]">Email: </label></p>
+      <p><input type="text" id="user[email]" name="user[email]" value="<%= user.email %>"></p>
+    <p><label for="user[password]">Password: </label></p>
+      <p><input type="password" id="user[password]" name="user[password]" value="<%= user.password %>"></p>
+    <p><input type="submit" value= "Submit"></p>
+</form>
