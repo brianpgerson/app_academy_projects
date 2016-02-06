@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Goooooalllll</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <style media="screen">
+    input[type='text']{
+      border-radius: 5px
+    }
+  </style>
+</head>
+<body style= "height: 1000px; background: -webkit-linear-gradient(-45deg,  #f0cfbc 0%,#960000 100%); font-family: 'Luminari';">
+  <%= flash.now[:errors]%>
+  <%= flash[:notice] %>
+
+<%= yield %>
+
+</body>
+</html>
