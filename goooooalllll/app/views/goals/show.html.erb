@@ -1,0 +1,9 @@
+<h1><%= @goal.title %></h1>
+
+<p>
+  <%= @goal.description %> <br>by <%= @goal.user.username %>
+</p>
+<p>
+  Is it complete? <%= @goal.completed ? 'Yes' : "No" %>
+</p>
+<%= button_to "Edit Goal", edit_goal_url, method: :get %>
