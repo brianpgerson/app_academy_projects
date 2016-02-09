@@ -44,12 +44,10 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Game = __webpack_require__ (1);
+	var gameView = __webpack_require__ (5);
 
-	var game = new Game();
-	var c = document.getElementById("myCanvas");
-	var ctx = c.getContext("2d");
-	game.draw(ctx);
+	var gv = new gameView();
+	gv.start();
 
 
 /***/ },
@@ -60,17 +58,45 @@
 
 	var DIM_X = 500;
 	var DIM_Y = 500;
-	var NUM_ASTEROIDS = 10;
+	var NUM_ASTEROIDS = 4;
 
 	function Game(){
 	  this.asteroids = [];
 	  this.addAsteroids();
 	}
 
+	Game.prototype.wrap = function (pos) {
+	  var x = (pos[0] < 0) ? (DIM_X + pos[0] % DIM_X) : (pos[0] % DIM_X);
+	  var y = (pos[1] < 0) ? (DIM_Y + pos[1] % DIM_Y) : (pos[1] % DIM_Y);
+	  return [x,y];
+	};
+
 	Game.prototype.addAsteroids = function () {
 	  for (var i = 0; i < NUM_ASTEROIDS; i++) {
-	    this.asteroids.push(new Asteroid( { pos: this.randomPosition() } ));
+	    this.asteroids.push(new Asteroid( { pos: this.randomPosition(), game: this } ));
 	  }
+	};
+
+	Game.prototype.remove = function(asteroid) {
+	  this.asteroids =
+	   this.asteroids.filter(function(el) { return el.pos !== asteroid.pos; } );
+	};
+
+	Game.prototype.checkCollisions = function () {
+	  for (var i = 0; i < this.asteroids.length; i++) {
+	    var thisGuy = this.asteroids[i];
+	    for (var j = i + 1; j < this.asteroids.length; j++) {
+	      var thatGuy = this.asteroids[j];
+	      if (thisGuy.isCollidedWith(thatGuy)) {
+	        thisGuy.collideWith(thatGuy);
+	      }
+	    }
+	  }
+	};
+
+	Game.prototype.step = function () {
+	  this.moveObjects();
+	  this.checkCollisions();
 	};
 
 	Game.prototype.randomPosition = function () {
@@ -86,7 +112,7 @@
 	  }
 	};
 
-	Game.prototype.move = function (ctx) {
+	Game.prototype.moveObjects = function (ctx) {
 	  for (var i = 0; i < this.asteroids.length; i++) {
 	    this.asteroids[i].move();
 	  }
@@ -150,6 +176,7 @@
 	  this.vel = optionsHash['vel'];
 	  this.radius = optionsHash['radius'];
 	  this.color = optionsHash['color'];
+	  this.game = optionsHash['game'];
 	}
 
 	MovingObject.prototype.draw = function(ctx){
@@ -169,11 +196,47 @@
 	};
 
 	MovingObject.prototype.move = function () {
-	  this.pos[0] += this.vel[0];
-	  this.pos[1] += this.vel[1];
+	  var x = this.pos[0] + this.vel[0];
+	  var y = this.pos[1] + this.vel[1];
+	  this.pos = this.game.wrap([x, y]);
+	};
+
+	MovingObject.prototype.isCollidedWith = function (otherObject) {
+	  var distance = Math.sqrt(Math.pow((this.pos[0] - otherObject.pos[0]), 2) +
+	    Math.pow((this.pos[1] - otherObject.pos[1]), 2));
+	  if (distance <= (this.radius + otherObject.radius)) {
+	    return true;
+	  }
+	  return false;
+	};
+
+	MovingObject.prototype.collideWith = function (otherObject) {
+	  this.game.remove(this);
+	  this.game.remove(otherObject);
 	};
 
 	module.exports = MovingObject;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Game = __webpack_require__ (1);
+
+	function GameView() {
+	  this.game = new Game();
+	  this.ctx = document.getElementById("myCanvas").getContext("2d");
+	}
+
+	GameView.prototype.start = function () {
+	  setInterval(function() {
+	    this.game.step();
+	    this.game.draw(this.ctx);
+	  }.bind(this), 20);
+	};
+
+	module.exports = GameView;
 
 
 /***/ }
