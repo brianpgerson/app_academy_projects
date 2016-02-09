@@ -37,9 +37,7 @@ MovingObject.prototype.isCollidedWith = function (otherObject) {
   return false;
 };
 
-MovingObject.prototype.collideWith = function (otherObject) {
-  this.game.remove(this);
-  this.game.remove(otherObject);
-};
+MovingObject.prototype.collideWith = function (otherObject) {};
+MovingObject.prototype.relocate = function () {};
 
 module.exports = MovingObject;

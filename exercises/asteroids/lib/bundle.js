@@ -55,13 +55,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Asteroid = __webpack_require__ (2);
+	var Ship = __webpack_require__ (6);
 
 	var DIM_X = 500;
 	var DIM_Y = 500;
-	var NUM_ASTEROIDS = 4;
+	var NUM_ASTEROIDS = 5;
 
 	function Game(){
 	  this.asteroids = [];
+	  this.ship = new Ship({pos: this.randomPosition(), game: this});
 	  this.addAsteroids();
 	}
 
@@ -71,9 +73,15 @@
 	  return [x,y];
 	};
 
+	Game.prototype.allObjects = function () {
+	  return this.asteroids.concat(this.ship);
+	};
+
 	Game.prototype.addAsteroids = function () {
 	  for (var i = 0; i < NUM_ASTEROIDS; i++) {
-	    this.asteroids.push(new Asteroid( { pos: this.randomPosition(), game: this } ));
+	    this.asteroids.push(new Asteroid( {
+	      pos: this.randomPosition(), game: this
+	    } ));
 	  }
 	};
 
@@ -83,10 +91,10 @@
 	};
 
 	Game.prototype.checkCollisions = function () {
-	  for (var i = 0; i < this.asteroids.length; i++) {
-	    var thisGuy = this.asteroids[i];
-	    for (var j = i + 1; j < this.asteroids.length; j++) {
-	      var thatGuy = this.asteroids[j];
+	  for (var i = 0; i < this.allObjects().length; i++) {
+	    var thisGuy = this.allObjects()[i];
+	    for (var j = i + 1; j < this.allObjects().length; j++) {
+	      var thatGuy = this.allObjects()[j];
 	      if (thisGuy.isCollidedWith(thatGuy)) {
 	        thisGuy.collideWith(thatGuy);
 	      }
@@ -107,14 +115,14 @@
 
 	Game.prototype.draw = function (ctx) {
 	  ctx.clearRect(0, 0, DIM_X, DIM_Y);
-	  for (var i = 0; i < this.asteroids.length; i++) {
-	    this.asteroids[i].draw(ctx);
+	  for (var i = 0; i < this.allObjects().length; i++) {
+	    this.allObjects()[i].draw(ctx);
 	  }
 	};
 
 	Game.prototype.moveObjects = function (ctx) {
-	  for (var i = 0; i < this.asteroids.length; i++) {
-	    this.asteroids[i].move();
+	  for (var i = 0; i < this.allObjects().length; i++) {
+	    this.allObjects()[i].move();
 	  }
 	};
 
@@ -127,8 +135,9 @@
 
 	var Util = __webpack_require__ (3);
 	var MovingObject = __webpack_require__ (4);
+	var Ship = __webpack_require__ (6);
 
-	var COLOR = "FFFFFF";
+	var COLOR = "#000000";
 	var RADIUS = 20;
 
 	function Asteroid(optionsHash) {
@@ -140,6 +149,12 @@
 
 	Util.prototype.inherits(Asteroid, MovingObject);
 
+	Asteroid.prototype.collideWith = function (otherObject) {
+	  if (otherObject.color !== "#000000") {
+	    debugger;
+	    otherObject.relocate();
+	  }
+	};
 
 	module.exports = Asteroid;
 
@@ -210,10 +225,8 @@
 	  return false;
 	};
 
-	MovingObject.prototype.collideWith = function (otherObject) {
-	  this.game.remove(this);
-	  this.game.remove(otherObject);
-	};
+	MovingObject.prototype.collideWith = function (otherObject) {};
+	MovingObject.prototype.relocate = function () {};
 
 	module.exports = MovingObject;
 
@@ -230,13 +243,57 @@
 	}
 
 	GameView.prototype.start = function () {
+	  this.bindKeyHandlers();
 	  setInterval(function() {
 	    this.game.step();
 	    this.game.draw(this.ctx);
 	  }.bind(this), 20);
 	};
 
+	GameView.prototype.bindKeyHandlers = function () {
+	  debugger;
+	  key('up', function(){ this.game.ship.power([0, -1]) }.bind(this));
+	  key('down', function(){ this.game.ship.power([0, 1]) }.bind(this));
+	  key('left', function(){ this.game.ship.power([-1, 0]) }.bind(this));
+	  key('right', function(){ this.game.ship.power([1, 0]) }.bind(this));
+
+	};
+
 	module.exports = GameView;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__ (3);
+	var MovingObject = __webpack_require__ (4);
+
+	var COLOR = "#7F00FF";
+	var RADIUS = 15;
+
+	function Ship(optionsHash) {
+	  optionsHash['color'] =  COLOR;
+	  optionsHash['radius'] =  RADIUS;
+	  optionsHash['vel'] = [0, 0];
+	  MovingObject.call(this, optionsHash);
+	}
+
+	Util.prototype.inherits(Ship, MovingObject);
+
+	Ship.prototype.relocate = function () {
+	  this.pos = this.game.randomPosition();
+	  this.vel = [0,0];
+	};
+
+	Ship.prototype.power = function (impulse) {
+	  this.vel[0] += impulse[0];
+	  this.vel[1] += impulse[1];
+	};
+
+
+
+	module.exports = Ship;
 
 
 /***/ }

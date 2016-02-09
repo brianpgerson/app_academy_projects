@@ -1,7 +1,8 @@
 var Util = require ('./util.js');
 var MovingObject = require ('./movingObject.js');
+var Ship = require ('./ship.js');
 
-var COLOR = "FFFFFF";
+var COLOR = "#000000";
 var RADIUS = 20;
 
 function Asteroid(optionsHash) {
@@ -13,5 +14,11 @@ function Asteroid(optionsHash) {
 
 Util.prototype.inherits(Asteroid, MovingObject);
 
+Asteroid.prototype.collideWith = function (otherObject) {
+  if (otherObject.color !== "#000000") {
+    debugger;
+    otherObject.relocate();
+  }
+};
 
 module.exports = Asteroid;
