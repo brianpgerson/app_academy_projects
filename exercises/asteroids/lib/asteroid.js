@@ -15,8 +15,10 @@ function Asteroid(optionsHash) {
 Util.prototype.inherits(Asteroid, MovingObject);
 
 Asteroid.prototype.collideWith = function (otherObject) {
-  if (otherObject.color !== "#000000") {
-    debugger;
+  if (otherObject.color === "#ff0000") {
+    this.game.remove(this);
+    this.game.remove(otherObject);
+  } else if ( otherObject.color === "#7F00FF" ) {
     otherObject.relocate();
   }
 };

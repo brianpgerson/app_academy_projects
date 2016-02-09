@@ -1,5 +1,6 @@
 var Util = require ('./util.js');
 var MovingObject = require ('./movingObject.js');
+var Bullet = require ('./bullet.js');
 
 var COLOR = "#7F00FF";
 var RADIUS = 15;
@@ -23,6 +24,12 @@ Ship.prototype.power = function (impulse) {
   this.vel[1] += impulse[1];
 };
 
+Ship.prototype.fireBullet = function () {
+  var bullet = new  Bullet({
+    pos: this.pos, vel: [this.vel[0] * 2.5, this.vel[1] * 2.5] , game: this.game
+  });
+  this.game.addObject(bullet);
+};
 
 
 module.exports = Ship;
