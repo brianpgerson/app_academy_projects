@@ -1,0 +1,25 @@
+.row {
+  width: 300px;
+}
+
+.square {
+  display: block;
+  float: left;
+  border: 3px solid black;
+  border-radius: 3px;
+  background-color: purple;
+  height: 94px;
+  width: 94px;
+}
+
+.square:hover {
+  background-color: orange;
+}
+
+.marked {
+  background-color: blue;
+  font-size: 48px;
+  color: yellow;
+  text-align: center;
+  font-family: sans-serif;
+}
