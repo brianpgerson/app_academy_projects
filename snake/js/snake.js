@@ -10,13 +10,11 @@ function Snake(startingPos, board){
 }
 
 Snake.prototype.move = function () {
-  debugger;
   var head = this.segments[0];
   var newHead = plus(head, DIRECTIONS[this.direction]);
 
   // debugger;
   if (newHead[0] === this.board.apple[0] && newHead[1] === this.board.apple[1]) {
-    debugger;
     this.board.moveApple();
   } else {
     this.board.changes.push(this.segments.pop());

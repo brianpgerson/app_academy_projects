@@ -1,11 +1,17 @@
 body {
-  background-color: darkblue;
+  background-image: url('https://i.ytimg.com/vi/sPSFYGdoQyc/maxresdefault.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: green;
   color: white;
   font-family: sans-serif;
 }
 
 h1 {
   text-align: center;
+}
+.snake-board {
+  margin-left: 0;
 }
 
 .snake-board ul {

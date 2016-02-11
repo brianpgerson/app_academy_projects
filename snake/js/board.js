@@ -5,6 +5,7 @@ function Board() {
   this.changes = [];
   this.snake = new Snake(this.randomPosition(), this);
   this.apple = this.randomPosition();
+  this.score = 0;
 }
 
 Board.prototype.ROWS = 20;
@@ -23,6 +24,12 @@ Board.prototype.randomPosition = function () {
 
 Board.prototype.moveApple = function () {
   this.apple = this.randomPosition();
+};
+
+Board.prototype.reset = function () {
+  this.snake = new Snake(this.randomPosition(), this);
+  this.apple = this.randomPosition();
+  this.score = 0;
 };
 
 Board.prototype.snakeDead = function () {

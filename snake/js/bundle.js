@@ -68,6 +68,7 @@
 	  this.changes = [];
 	  this.snake = new Snake(this.randomPosition(), this);
 	  this.apple = this.randomPosition();
+	  this.score = 0;
 	}
 	
 	Board.prototype.ROWS = 20;
@@ -86,6 +87,12 @@
 	
 	Board.prototype.moveApple = function () {
 	  this.apple = this.randomPosition();
+	};
+	
+	Board.prototype.reset = function () {
+	  this.snake = new Snake(this.randomPosition(), this);
+	  this.apple = this.randomPosition();
+	  this.score = 0;
 	};
 	
 	Board.prototype.snakeDead = function () {
@@ -121,13 +128,11 @@
 	}
 	
 	Snake.prototype.move = function () {
-	  debugger;
 	  var head = this.segments[0];
 	  var newHead = plus(head, DIRECTIONS[this.direction]);
 	
 	  // debugger;
 	  if (newHead[0] === this.board.apple[0] && newHead[1] === this.board.apple[1]) {
-	    debugger;
 	    this.board.moveApple();
 	  } else {
 	    this.board.changes.push(this.segments.pop());
@@ -189,6 +194,7 @@
 	
 	View.prototype.bindStuff = function () {
 	  $(document).on('keydown', this.handleMove.bind(this));
+	  $('.restart').on('click', this.reset.bind(this));
 	};
 	
 	View.prototype.update = function () {
@@ -196,9 +202,15 @@
 	
 	  this.board.snake.move();
 	
+	  if (this.board.snakeDead()) {
+	    alert("you dead dawg");
+	    clearInterval(this.loop);
+	  }
+	
 	  if (currentApple !== this.board.apple) {
 	    this.$el.find('.appled').removeClass('appled');
 	    this.$el.find("[data-pos='" + this.board.apple + "']").addClass('appled');
+	    this.board.score += 10;
 	  }
 	
 	  while (this.board.changes.length > 0) {
@@ -206,12 +218,15 @@
 	    var $toSnake = this.$el.find("[data-pos='" + changePos + "']");
 	    $toSnake.toggleClass('snaked');
 	  }
+	  $(".score").text(this.board.score);
+	};
 	
-	  if (this.board.snakeDead()) {
-	    clearInterval(this.loop);
-	    alert("you dead dawg");
-	  }
-	
+	View.prototype.reset = function () {
+	  this.begun = false;
+	  $('li').removeClass('snaked appled');
+	  this.board.reset();
+	  var fakeKey = {keyCode: 40};
+	  this.handleMove(fakeKey);
 	};
 	
 	View.prototype.play = function () {
