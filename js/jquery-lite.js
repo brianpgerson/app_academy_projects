@@ -86,6 +86,40 @@
     });
   };
 
+  DOMNodeCollection.prototype.children = function () {
+    var allChildren = [];
+    this.htmlEls.forEach(function(el){
+      var children = [].slice.apply(el.children);
+      allChildren = allChildren.concat(children);
+    });
+    return new DOMNodeCollection(allChildren);
+  };
+
+
+  DOMNodeCollection.prototype.parent = function () {
+    var parents = [];
+    this.htmlEls.forEach(function(el){
+      parents.push(el.parentElement);
+    });
+    return new DOMNodeCollection(parents);
+  };
+
+
+  DOMNodeCollection.prototype.find = function (selector) {
+    var foundStuff = [];
+    this.htmlEls.forEach(function(el) {
+      foundStuff =
+        foundStuff.concat([].slice.apply(el.querySelectorAll(selector)));
+    });
+    return new DOMNodeCollection(foundStuff);
+  };
+
+  DOMNodeCollection.prototype.remove = function () {
+    this.htmlEls.forEach(function(el) {
+      el.remove();
+    });
+    return "that shit goooonnnneee";
+  };
 
 })();
 
