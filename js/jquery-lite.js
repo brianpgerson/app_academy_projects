@@ -1,10 +1,18 @@
 (function(){
-
   if (window.Root === undefined) {
     window.Root = {};
   }
 
   var Root = window.Root;
+  var queue = [];
+
+  document.addEventListener("DOMContentLoaded", function(event){
+    queue.forEach (function(func) {
+      func();
+    });
+  });
+
+  Root.$l = $l;
 
   function $l(arg){
     if (typeof arg === "string") {
@@ -17,10 +25,24 @@
       if (arg.every(function(el){ return el instanceof HTMLElement; })){
         return new DOMNodeCollection(arg);
       }
+    } else if (typeof (arg) === "function") {
+      queue.push(arg);
     }
   }
 
-  Root.$l = $l;
+  Function.prototype.extend = function(output) {
+    debugger;
+    var args = [].slice.call(arguments, 1);
+
+    args.forEach (function(arg) {
+      var allKeys = Object.keys(arg);
+      allKeys.forEach (function(key) {
+        output[key] = arg[key];
+      });
+    });
+    return output;
+  };
+
 
   function DOMNodeCollection(array) {
     this.htmlEls = array;
@@ -46,7 +68,6 @@
   DOMNodeCollection.prototype.append = function (arg) {
     if (arg.hasOwnProperty("htmlEls")) {
       arg.htmlEls.forEach(function(newEl) {
-        debugger;
         this.append(newEl);
       }.bind(this));
     } else if (arg instanceof HTMLElement) {
@@ -120,6 +141,20 @@
     });
     return "that shit goooonnnneee";
   };
+
+  DOMNodeCollection.prototype.on = function(action, callback) {
+    this.htmlEls.forEach(function(el) {
+      el.addEventListener(action, callback);
+    });
+  };
+
+  DOMNodeCollection.prototype.off = function(action, callback) {
+    this.htmlEls.forEach(function(el) {
+      el.removeEventListener(action, callback);
+    });
+  };
+
+
 
 })();
 
