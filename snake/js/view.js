@@ -28,6 +28,7 @@ View.prototype.setupBoard = function () {
 
 View.prototype.bindStuff = function () {
   $(document).on('keydown', this.handleMove.bind(this));
+  $('.restart').on('click', this.reset.bind(this));
 };
 
 View.prototype.update = function () {
@@ -35,9 +36,15 @@ View.prototype.update = function () {
 
   this.board.snake.move();
 
+  if (this.board.snakeDead()) {
+    alert("you dead dawg");
+    clearInterval(this.loop);
+  }
+
   if (currentApple !== this.board.apple) {
     this.$el.find('.appled').removeClass('appled');
     this.$el.find("[data-pos='" + this.board.apple + "']").addClass('appled');
+    this.board.score += 10;
   }
 
   while (this.board.changes.length > 0) {
@@ -45,12 +52,15 @@ View.prototype.update = function () {
     var $toSnake = this.$el.find("[data-pos='" + changePos + "']");
     $toSnake.toggleClass('snaked');
   }
+  $(".score").text(this.board.score);
+};
 
-  if (this.board.snakeDead()) {
-    clearInterval(this.loop);
-    alert("you dead dawg");
-  }
-
+View.prototype.reset = function () {
+  this.begun = false;
+  $('li').removeClass('snaked appled');
+  this.board.reset();
+  var fakeKey = {keyCode: 40};
+  this.handleMove(fakeKey);
 };
 
 View.prototype.play = function () {
