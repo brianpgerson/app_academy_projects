@@ -31,7 +31,6 @@
   }
 
   Function.prototype.extend = function(output) {
-    debugger;
     var args = [].slice.call(arguments, 1);
 
     args.forEach (function(arg) {
@@ -154,6 +153,37 @@
     });
   };
 
+  Function.prototype.ajax = function (optionsHash) {
+    var defaults = {
+      success:function(data) {
+        console.log(data);
+      },
+      error: function() {
+        console.error("An error occured.");
+      },
+      method: 'GET',
+      url: window.location.href,
+      data: {},
+      contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+
+    if (optionsHash !== undefined) {
+      var brianGerson = $l.extend(defaults, optionsHash);
+    } else {
+      var brianGerson = defaults;
+    }
+
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
+        brianGerson.success(xmlhttp.responseText);
+      }
+    };
+
+    xmlhttp.open(brianGerson.method, brianGerson.url);
+    xmlhttp.send();
+  };
 
 
 })();
