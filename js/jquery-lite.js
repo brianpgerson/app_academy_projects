@@ -13,6 +13,10 @@
       return new DOMNodeCollection(nodes);
     } else if (arg instanceof HTMLElement) {
       return new DOMNodeCollection([arg]);
+    } else if (Array.isArray(arg)){
+      if (arg.every(function(el){ return el instanceof HTMLElement; })){
+        return new DOMNodeCollection(arg);
+      }
     }
   }
 
@@ -20,9 +24,60 @@
 
   function DOMNodeCollection(array) {
     this.htmlEls = array;
-
   }
 
+  DOMNodeCollection.prototype.html = function(string) {
+    if (string === undefined) {
+      return this.htmlEls[0].innerHTML;
+    } else {
+      this.htmlEls.forEach(function(el) {
+        el.innerHTML = string;
+      });
+      return "HTML is updated to " + string;
+    }
+  };
 
+  DOMNodeCollection.prototype.empty = function () {
+    this.htmlEls.forEach(function(el) {
+      el.innerHTML = null;
+    });
+  };
+
+  DOMNodeCollection.prototype.append = function (arg) {
+    if (arg.hasOwnProperty("htmlEls")) {
+      arg.htmlEls.forEach(function(newEl) {
+        debugger;
+        this.append(newEl);
+      }.bind(this));
+    } else if (arg instanceof HTMLElement) {
+      this.htmlEls.forEach( function(el) {
+        el.appendChild(arg);
+      });
+    } else {
+      this.htmlEls.forEach(function(el) {
+        el.innerHTML += arg;
+      });
+    }
+  };
 
 })();
+
+// test1 = document.createElement('li')
+// test2 = document.createElement('li')
+// test3 = document.createElement('li')
+//
+// fun = [test1, test2, test3]
+// fun.forEach(function(el) {el.innerHTML = "testing"})
+//
+// domfun = Root.$l(fun)
+// ul = Root.$l('ul')
+
+
+
+
+
+
+
+
+
+//whitespace
