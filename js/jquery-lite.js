@@ -60,7 +60,35 @@
     }
   };
 
+  DOMNodeCollection.prototype.attr = function (attribute, value) {
+    if (value === undefined) {
+      var output = [];
+      this.htmlEls.forEach(function(el) {
+        output.push(el.getAttribute(attribute));
+      });
+      return output;
+    } else {
+      this.htmlEls.forEach(function(el) {
+        el.setAttribute(attribute, value);
+      });
+    }
+  };
+
+  DOMNodeCollection.prototype.addClass = function (string) {
+    this.htmlEls.forEach(function(el) {
+      el.classList.add(string);
+    });
+  };
+
+  DOMNodeCollection.prototype.removeClass = function (string) {
+    this.htmlEls.forEach(function(el) {
+      el.classList.remove(string);
+    });
+  };
+
+
 })();
+
 
 // test1 = document.createElement('li')
 // test2 = document.createElement('li')
@@ -71,7 +99,7 @@
 //
 // domfun = Root.$l(fun)
 // ul = Root.$l('ul')
-
+//
 
 
 
