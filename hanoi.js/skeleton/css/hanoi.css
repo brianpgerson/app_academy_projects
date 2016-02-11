@@ -18,8 +18,11 @@ ul {
 
 body {
   font-family: sans-serif;
+  color: white;
   text-align: center;
   font-weight: bold;
+  background-image: url("http://universalfreepress.com/wp-content/uploads/2015/08/o-HILLARY-CLINTON-facebook.jpg");
+  background-size: cover;
 }
 
 h1 {
@@ -80,4 +83,3 @@ li.disk-3 {
 .game-over li {
   background: green;
 }
-
