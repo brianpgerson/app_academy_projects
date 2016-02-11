@@ -1,0 +1,14 @@
+<h1>Check out these sweet subs</h1>
+
+<ul>
+  <%= render @subs %>
+</ul>
+
+
+<% if current_user.nil? %>
+<p><%= button_to "Sign In", new_session_url, method: :get %></p>
+<p><%= button_to "Sign On Up", new_user_url, method: :get %></p>
+<% else %>
+<p><%= button_to "Create a Sub!", new_sub_url, method: :get %>
+<p><%= button_to "Signing Off", session_url, method: :delete %></p>
+<% end %>
