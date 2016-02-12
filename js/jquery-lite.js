@@ -159,7 +159,7 @@
         console.log(data);
       },
       error: function() {
-        console.error("An error occured.");
+        console.error("An error occured: YO MAMMA.");
       },
       method: 'GET',
       url: window.location.href,
@@ -173,21 +173,31 @@
       var brianGerson = defaults;
     }
 
+    var prom = new Promise (
+      function(resolve, reject) {
+        var xmlhttp = new XMLHttpRequest();
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function(){
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
-        brianGerson.success(xmlhttp.responseText);
+        xmlhttp.onreadystatechange = function(){
+          if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
+            resolve(xmlhttp.responseText);
+          }
+        };
+        xmlhttp.onerror = function () {
+            reject(new Error(
+                'XMLHttpRequest Error: '+xmlhttp.statusText));
+        };
+
+        xmlhttp.open(brianGerson.method, brianGerson.url);
+        xmlhttp.send();
       }
-    };
-
-    xmlhttp.open(brianGerson.method, brianGerson.url);
-    xmlhttp.send();
+    );
+    prom.then(
+      brianGerson.success,
+      brianGerson.error
+    );
   };
 
-
 })();
-
 
 // test1 = document.createElement('li')
 // test2 = document.createElement('li')
@@ -200,7 +210,7 @@
 // ul = Root.$l('ul')
 //
 
-
+// var prom = Root.$l.ajax({url: "http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=bcb83c4b54aee8418983c2aff3073b3b"}).then(function(a) {console.log(a);}, function(a) {console.log("yousuck");})
 
 
 
