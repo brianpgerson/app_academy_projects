@@ -1,0 +1,20 @@
+<% action_url = (post.persisted?) ? edit_post_url : posts_url %>
+<% route_verb = (post.persisted?) ? 'edit' : 'post' %>
+<form action="<%= action_url %>" method="post">
+  <%= auth_token %>
+  <input type="hidden" name="_method" value="<%= route_verb %>">
+
+  <p>
+    <label for="title">Post Title: </label>
+    <input type="text" name="post[title]" id="title" value="<%= post.title %>">
+  </p>
+  <p>
+    <label for="url">URL: </label>
+    <input type="text" name="post[url]" id="url" value="<%= post.url %>">
+  </p>
+    <label for="content">Post Content: </label>
+    <textarea name="post[content]" id="content" rows="8" cols="40"><%= post.content %></textarea>
+  <p>
+    <input type="submit" value="Go Go Go">
+  </p>
+</form>
