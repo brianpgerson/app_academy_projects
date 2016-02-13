@@ -2,7 +2,11 @@ function TweetCompose(el) {
   this.$el = $(el);
 
   this.$el.find("input[type=submit]").on("click", this.submit.bind(this));
+  this.$el.find(".tweet-content").on("input", this.charCount.bind(this));
 
+  this.$el.find(".add-mention").on("click", this.addMentionedUser.bind(this));
+  this.$el.find(".mentioned-users")
+    .on("click", ".remove-mention", this.removeMentionedUser.bind(this));
 }
 
 TweetCompose.prototype.submit = function (e) {
@@ -35,6 +39,23 @@ TweetCompose.prototype.handleSucess = function (data) {
 TweetCompose.prototype.clearInput = function () {
   this.$el.find(":input").val('');
   this.$el.find(":input").prop('disable');
+  this.$el.find(".mentioned-users").empty();
+};
+
+TweetCompose.prototype.charCount = function () {
+  var count = this.$el.find(".tweet-content").val().length;
+  var remaining = "Remaining Characters: " + (140 - count);
+  this.$el.find(".chars-left").text(remaining);
+};
+
+TweetCompose.prototype.addMentionedUser = function (e) {
+  e.preventDefault();
+  this.$el.find('.mentioned-users').append(this.$el.find('script').html());
+};
+
+TweetCompose.prototype.removeMentionedUser = function (e) {
+  e.preventDefault();
+  $(e.currentTarget).parent().remove();
 };
 
 module.exports = TweetCompose;
