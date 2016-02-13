@@ -42,15 +42,25 @@ class User < ActiveRecord::Base
   end
 
   def feed_tweets(limit = nil, max_created_at = nil)
-    @tweets = Tweet
-      .joins(:user)
-      .joins("LEFT OUTER JOIN follows ON users.id = follows.followee_id")
-      .where("tweets.user_id = :id OR follows.follower_id = :id", id: self.id)
-      .order("tweets.created_at DESC")
-      .uniq
-
+    if limit.nil? || max_created_at.nil?
+      @tweets = Tweet
+        .joins(:user)
+        .joins("LEFT OUTER JOIN follows ON users.id = follows.followee_id")
+        .where("tweets.user_id = :id OR follows.follower_id = :id", id: self.id)
+        .order("tweets.created_at DESC")
+        .uniq
+    else
+      @tweets = Tweet
+        .joins(:user)
+        .joins("LEFT OUTER JOIN follows ON users.id = follows.followee_id")
+        .where("tweets.user_id = :id OR follows.follower_id = :id", id: self.id)
+        .where("created_at < ? ", max_created_at)
+        .order("tweets.created_at DESC")
+        .uniq
+        .limit("#{limit}")
+    end
     # TODO: How can we use limit/max_created_at here??
-
+    # .where(created_at: (Time.new.at(0)..Time.parse(max_created_at)))
     @tweets
   end
 
