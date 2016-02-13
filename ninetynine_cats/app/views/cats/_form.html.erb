@@ -1,0 +1,40 @@
+<% action_url = cat.persisted? ? cat_url : cats_url %>
+<form action="<%= action_url %>" method="post">
+  <% if action == :edit %>
+    <input type="hidden" name="_method" value="patch">
+  <% end %>
+  <!-- text: name, radio: sex, drop down: color, blank option, date, textarea -->
+  <p>
+    <label for="cat[name]">Cat Name: </label>
+    <input type="text" name="cat[name]" value="<%= cat.name %>">
+  </p>
+  <p>
+    <label for="cat[sex]">Female: </label>
+    <input type="radio" name="cat[sex]" id="cat_sex_female" value="f" <%= "checked" if cat.sex == 'f'%>>
+    <label for="cat[sex]">Male: </label>
+    <input type="radio" name="cat[sex]" id="cat_sex_male" value="m" <%= "checked" if cat.sex == 'm'%>>
+  </p>
+  <p>
+    <label for="cat[color]">Pretty Color: </label>
+    <select name="cat[color]" id="cat_color">
+      <option></option>
+      <option value="black" <%= "selected" if cat.color == "black" %>>black</option>
+      <option value="white" <%= "selected" if cat.color == "white" %>>white</option>
+      <option value="calico" <%= "selected" if cat.color == "calico" %>>calico</option>
+      <option value="orange" <%= "selected" if cat.color == "orange" %>>orange</option>
+      <option value="brown" <%= "selected" if cat.color == "brown" %>>brown</option>
+    </select>
+  </p>
+  <p>
+    <label for="cat[birthdate]">Cat's Bday: </label>
+    <input type="date" name="cat[birthdate]" value=<%= cat.birthdate %>>
+  </p>
+  <p>
+    <label for="cat[description]">Cat's Description: </label>
+    <textarea name="cat[description]" id="cat_description"><%= cat.description %></textarea>
+  </p>
+  <p>
+    <input type="submit" value="Save Cat Changes">
+  </p>
+
+</form>
