@@ -1,0 +1,14 @@
+.selected {
+  font-weight: bold;
+}
+
+li {
+  list-style: none;
+  float: left;
+  margin-right: 10px;
+}
+
+article {
+  float: none;
+  display: block;
+}
