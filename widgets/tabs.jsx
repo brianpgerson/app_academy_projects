@@ -34,7 +34,7 @@ var Tabs = React.createClass({
 
     return (
       <div>
-        <ul>
+        <ul className="group">
           {headerListItems}
         </ul>
         <article>
