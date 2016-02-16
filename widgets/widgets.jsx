@@ -4,13 +4,23 @@ var React = require('react'),
     AutoComplete = require('./autocomplete'),
     WeatherClock = require('./weather_clock');
 
+var names = [
+  "Tom",
+  "Joeseph",
+  "Sarah",
+  "Markov",
+  "Barkley",
+  "Allex",
+  "Alligator"
+];
+
 var Widgets = React.createClass({
   render: function(){
     return(
       <div>
         <Tabs />
         <WeatherClock />
-        <AutoComplete />
+        <AutoComplete names={names} />
       </div>
   );
   }

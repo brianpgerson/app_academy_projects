@@ -1,3 +1,15 @@
+body {
+  padding: 40px;
+  font-family: monospace;
+}
+
+#root {
+  background-color: #EEE;
+  padding: 15px;
+  height: 500px;
+}
+
+
 .selected {
   font-weight: bold;
 }
@@ -10,6 +22,8 @@ li {
 
 ul {
   padding-left: 0;
+  margin: auto;
+  width: 600px;
 }
 
 .group:after {
@@ -35,4 +49,9 @@ article {
 .weather {
   display: block;
   font-size: 20px;
+}
+
+.nameStuff:hover {
+  background-color: black;
+  color: white;
 }
