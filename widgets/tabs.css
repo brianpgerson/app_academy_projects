@@ -51,7 +51,43 @@ article {
   font-size: 20px;
 }
 
+.nameStuff{
+  color: #006400;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background-color 2s ease;
+}
+
 .nameStuff:hover {
   background-color: black;
-  color: white;
+  padding: 5px;
+  color: #0F0;
+  border-radius: 5px;
 }
+
+
+
+.auto-enter {
+   opacity: 0.01;
+   transform: translateY(500%);
+   transform: rotateZ(1080deg);
+ }
+
+ .auto-enter.auto-enter-active {
+   opacity: 1;
+   transform: translateY(0);
+ transform: rotateZ (0deg);
+   transition: opacity 500ms, transform 500ms;
+
+ }
+
+ .auto-leave {
+   opacity: 1;
+   transform: translateY(0);
+ }
+
+ .auto-leave.auto-leave-active {
+   opacity: 0.01;
+   transform: translateY(500%);
+   transition: opacity 500ms, transform 500ms;
+ }

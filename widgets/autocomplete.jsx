@@ -1,5 +1,6 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
+    ReactCSSTransitionGroup = require('react-addons-css-transition-group'),
     Input = require('./input');
 
 var AutoComplete = React.createClass({
@@ -19,18 +20,27 @@ var AutoComplete = React.createClass({
       return (name.search(this.state.currentSearch) === 0 &&
         this.state.currentSearch !== "");
     }.bind(this));
+
+    var displayedNames = matchNames.map(function(name, index){
+      return (
+        <li
+        onClick={this.handleClickedName}
+        className="nameStuff"
+        key={index}>{name}</li>
+      );
+    }.bind(this));
+
     return (
       <div>
         <Input inputCallback={this.handleInputChanges}/>
         <ul>
-          {matchNames.map(function(name, index){
-            return (
-              <li
-              onClick={this.handleClickedName}
-              className="nameStuff"
-              key={index}>{name}</li>
-            );
-          }.bind(this))}
+          <ReactCSSTransitionGroup
+            transitionName="auto"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}
+            >
+            {displayedNames}
+          </ReactCSSTransitionGroup>
         </ul>
       </div>
     );
