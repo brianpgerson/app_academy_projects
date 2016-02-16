@@ -7,7 +7,7 @@ var React = require('react'),
 var Game = React.createClass({
   getInitialState: function() {
     return ({
-      board: new Minesweeper.Board(8, 4)
+      board: new Minesweeper.Board(10, 8)
     });
   },
   updateGame: function(reactTile, flagging) {
@@ -16,9 +16,7 @@ var Game = React.createClass({
     } else {
       reactTile.explore();
     }
-    
     this.setState({board: this.state.board });
-
     if (this.state.board.won()){
       alert("You're the best sweeper in mineland!");
     } else if (this.state.board.lost()) {

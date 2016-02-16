@@ -1,14 +1,59 @@
-.tile {
+body {
+  font-family: monospace;
+  text-align: center;
+}
+
+h1 {
+  font-size: 60px;
+}
+
+#mineland {
+  width: 240px;
+  margin: auto;
+}
+
+.mystery {
   display: block;
   float: left;
   width: 20px;
   height: 20px;
-  background-color: gray;
-  border: 1px solid black;
+  background-color: #CCC;
+  border-width: 2px;
+  border-style: outset;
+  text-align: center;
 }
+
+.explored {
+  background-color: #DDD;
+  border-width: 2px;
+  border-style: inset;
+  display: block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.bombed {
+  background-color: #F00;
+  border-width: 2px;
+  border-style: outset;
+  border-color: black;
+  display: block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
 
 .row {
   display: block;
   width: 500px;
-  height: 30px;
+}
+
+.group:after {
+  display: block;
+  content: "";
+  clear: both;
 }

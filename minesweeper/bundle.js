@@ -54,7 +54,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      board: new Minesweeper.Board(8, 4)
+	      board: new Minesweeper.Board(10, 8)
 	    };
 	  },
 	  updateGame: function (reactTile, flagging) {
@@ -63,9 +63,7 @@
 	    } else {
 	      reactTile.explore();
 	    }
-	
 	    this.setState({ board: this.state.board });
-	
 	    if (this.state.board.won()) {
 	      alert("You're the best sweeper in mineland!");
 	    } else if (this.state.board.lost()) {
@@ -19834,7 +19832,7 @@
 	      this.props.board.grid.map(function (row, index) {
 	        return React.createElement(
 	          'div',
-	          { className: 'row', key: index },
+	          { className: 'row group', key: index },
 	          row.map(function (tile, idx) {
 	            return React.createElement(Tile, {
 	              reactTile: row[idx],
@@ -19864,23 +19862,32 @@
 	  },
 	  render: function () {
 	    var text;
+	    var statusClass;
+	
 	    var tile = this.props.reactTile;
 	    if (tile.explored === false) {
 	      if (tile.flagged === false) {
 	        text = "?";
+	        statusClass = 'mystery';
 	      } else {
-	        text = "!";
+	        text = "⚑";
+	        statusClass = 'mystery';
 	      }
 	    } else if (tile.bombed === false) {
 	      if (tile.adjacentBombCount() !== 0) {
+	        statusClass = 'explored';
 	        text = tile.adjacentBombCount();
 	      } else {
+	        statusClass = 'explored';
 	        text = " ";
 	      }
+	    } else {
+	      statusClass = 'bombed';
+	      text = "💥";
 	    }
 	    return React.createElement(
 	      'div',
-	      { onClick: this.handleClick, className: 'tile' },
+	      { onClick: this.handleClick, className: statusClass },
 	      text
 	    );
 	  }

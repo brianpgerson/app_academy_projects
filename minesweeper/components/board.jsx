@@ -8,7 +8,7 @@ var Board = React.createClass({
       <div className="boardThing">
         {this.props.board.grid.map(function(row, index) {
           return (
-            <div className="row" key={index}>
+            <div className="row group" key={index}>
               {row.map(function(tile, idx) {
                 return (
                   <Tile
