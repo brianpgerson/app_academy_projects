@@ -93,12 +93,7 @@ var TodoStore = {
         }
       });
     }
-
   }
-
-
-
-
 };
 
 module.exports = TodoStore;
