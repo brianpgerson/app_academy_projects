@@ -1,0 +1,14 @@
+.tile {
+  display: block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  background-color: gray;
+  border: 1px solid black;
+}
+
+.row {
+  display: block;
+  width: 500px;
+  height: 30px;
+}
