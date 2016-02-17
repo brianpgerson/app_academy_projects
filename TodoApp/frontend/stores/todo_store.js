@@ -87,7 +87,7 @@ var TodoStore = {
             return el.id !== id;
           });
 
-          _todos.push(updatedToDo['todo']);
+          _todos.push(result);
 
           TodoStore.changed();
         }

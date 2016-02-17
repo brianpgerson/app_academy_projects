@@ -6,12 +6,15 @@ var TodoForm = React.createClass({
     return({ title: "", body: "" });
   },
   updateTitle: function(e){
+    e.preventDefault();
     this.setState({title: e.target.value});
   },
   updateBody: function(e){
+    e.preventDefault();
     this.setState({body: e.target.value});
   },
-  handleSubmit: function(){
+  handleSubmit: function(e){
+    e.preventDefault();
     var newTitle = this.state.title;
     var newBody = this.state.body;
     var newTodo = {title: newTitle, body: newBody};
@@ -33,7 +36,6 @@ var TodoForm = React.createClass({
         <input value={this.state.body} onChange={this.updateBody}></input>
         </label>
       </p>
-
         <input type="submit" onClick={this.handleSubmit}></input>
       </form>
     );
