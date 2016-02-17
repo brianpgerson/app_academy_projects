@@ -1,19 +1,23 @@
 var React = require('react'),
     DoneButton = require('./done_button'),
+    TodoDetailView = require('./detail_view'),
     TodoStore = require('../stores/todo_store');
 
 
 var TodoListItem = React.createClass({
-  handleDestroy: function(e){
+  getInitialState: function(){
+    return {displayBool: false};
+  },
+  handleItemClick: function(e){
     e.preventDefault();
-    TodoStore.destroy(this.props.id);
+    var bool = this.state.displayBool === true ? false : true;
+    this.setState({displayBool: bool});
   },
   render: function(){
     return (
       <div>
-        <div>{this.props.title}</div>
-        <div>{this.props.body}</div>
-        <input type="button" onClick={this.handleDestroy} value="DELETE"/>
+        <div onClick={this.handleItemClick}>{this.props.title}</div>
+        <TodoDetailView display={this.state.displayBool} body={this.props.body} id={this.props.id} />
         <DoneButton id={this.props.id} />
       </div>
     );

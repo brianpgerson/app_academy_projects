@@ -20,7 +20,7 @@ var TodoStore = {
   },
 
   all: function(){
-    return _todos;
+    return _todos.slice();
   },
 
   fetch: function(){
@@ -82,12 +82,11 @@ var TodoStore = {
         type: 'PATCH',
         success: function(result){
           console.log(result);
-
-          _todos = _todos.filter(function(el){
-            return el.id !== id;
-          });
-
-          _todos.push(result);
+          for (var i = 0; i < _todos.length; i++) {
+            if (_todos[i] === found) {
+              _todos[i].done = true;
+            }
+          }
 
           TodoStore.changed();
         }

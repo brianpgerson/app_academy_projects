@@ -13,3 +13,41 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+  padding: 30px;
+  background-color: #ccc;
+  font-family: sans-serif;
+}
+
+input[type=button] {
+  border-radius: 20px;
+  margin: 5px;
+  background-color: #ddd;
+  color: black;
+}
+
+input[type=submit] {
+  border-radius: 20px;
+  background-color: #ddd;
+  color: black;
+
+}
+
+input:hover {
+  cursor: crosshair;
+}
+
+input{
+  border-style: outset;
+  color: pink;
+  border-width: 2px;
+  background-color: #640000;
+  padding: 3px;
+}
+
+input:focus {
+  background-color: blue;
+  color: white;
+  border-style: inset;
+}
