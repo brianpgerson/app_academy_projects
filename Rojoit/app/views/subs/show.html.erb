@@ -1,0 +1,14 @@
+<h1> <%= @sub.title %></h1>
+<h3> <%= @sub.description %> </h3>
+
+<ul>
+  <%= render @sub.posts %>
+</ul>
+
+<p><%= link_to "Back To Index", subs_url %></p>
+<% if current_user.nil? %>
+<p><%= button_to "Sign In", new_session_url, method: :get %></p>
+<p><%= button_to "Sign On Up", new_user_url, method: :get %></p>
+<% else %>
+<p><%= button_to "Signing Off", session_url, method: :delete %></p>
+<% end %>
