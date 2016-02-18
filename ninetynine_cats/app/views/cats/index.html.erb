@@ -1,0 +1,7 @@
+ <% @cats.each do |cat| %>
+  <p><%= cat.name %>: <%= cat.description %> </p>
+ <% end %>
+
+<%= link_to "Make a new cat!", new_cat_url, method: :get%>
+
+<%= link_to "Request a cat!", new_cat_rental_request_url, method: :get%>
