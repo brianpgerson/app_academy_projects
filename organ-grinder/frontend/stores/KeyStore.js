@@ -15,8 +15,15 @@ KeyStore.__onDispatch = function(payload) {
     case "REMOVE_KEY":
       removeKey(payload.key);
       break;
+    case "SET_KEY":
+      setKeys(payload.key);
     }
   };
+
+function setKeys(keys){
+  _keys = keys;
+  KeyStore.__emitChange();
+}
 
 function addKey(key){
   if (_keys.indexOf(key) < 0) {
@@ -37,5 +44,3 @@ KeyStore.allKeys = function (){
 };
 
 module.exports = KeyStore;
-
-HI THER

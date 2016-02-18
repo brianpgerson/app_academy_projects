@@ -7,6 +7,12 @@ var KeyActions = {
       key: key
     });
   },
+  setKeys: function(keys) {
+    KeysDispatcher.dispatch({
+      actionType: "SET_KEY",
+      key: keys
+    });
+  },
   removeKey: function(key) {
     KeysDispatcher.dispatch({
       actionType: 'REMOVE_KEY',
@@ -14,5 +20,4 @@ var KeyActions = {
     });
   }
 };
-
 module.exports = KeyActions;
