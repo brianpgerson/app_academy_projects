@@ -26715,6 +26715,7 @@
 	var Key = __webpack_require__(187);
 	var TONES = __webpack_require__(7);
 	var Recorder = __webpack_require__(188);
+	var Jukebox = __webpack_require__(192);
 	
 	var Organ = React.createClass({
 	  displayName: 'Organ',
@@ -26732,7 +26733,8 @@
 	        null,
 	        keyboard
 	      ),
-	      React.createElement(Recorder, null)
+	      React.createElement(Recorder, null),
+	      React.createElement(Jukebox, null)
 	    );
 	  }
 	});
@@ -26911,9 +26913,14 @@
 	
 	var TrackActions = {
 	  addTrack: function (track) {
-	    debugger;
 	    KeysDispatcher.dispatch({
 	      actionType: "ADD_TRACK",
+	      track: track
+	    });
+	  },
+	  deleteTrack: function (track) {
+	    KeysDispatcher.dispatch({
+	      actionType: "DELETE_TRACK",
 	      track: track
 	    });
 	  }
@@ -26932,16 +26939,106 @@
 	var TrackStore = new Store(KeysDispatcher);
 	
 	TrackStore.__onDispatch = function (payload) {
-	  debugger;
 	  switch (payload.actionType) {
 	    case "ADD_TRACK":
 	      _tracks.push(payload.track);
-	      console.log(_tracks);
 	      this.__emitChange();
+	      break;
+	    case "DELETE_TRACK":
+	      removeTrack(payload.track);
+	
+	      break;
 	  }
 	};
 	
+	function removeTrack(track) {
+	  _tracks = _tracks.filter(function (storedTrack) {
+	    return storedTrack !== track;
+	  });
+	  TrackStore.__emitChange();
+	}
+	
+	TrackStore.allTracks = function () {
+	  return _tracks.slice();
+	};
+	
 	module.exports = TrackStore;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(28);
+	var TrackPlayer = __webpack_require__(193);
+	var TrackStore = __webpack_require__(191);
+	
+	var Jukebox = React.createClass({
+	  displayName: 'Jukebox',
+	
+	  getInitialState: function () {
+	    return { tracks: [] };
+	  },
+	
+	  componentDidMount: function () {
+	    TrackStore.addListener(this.handleNewTrack);
+	  },
+	  handleNewTrack: function () {
+	    this.setState({ tracks: TrackStore.allTracks() });
+	  },
+	  render: function () {
+	    var tracks = this.state.tracks.map(function (thisTrack, index) {
+	      return React.createElement(TrackPlayer, { key: index, track: thisTrack });
+	    });
+	    return React.createElement(
+	      'div',
+	      { className: 'jukebox' },
+	      tracks
+	    );
+	  }
+	});
+	
+	module.exports = Jukebox;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(28);
+	var TrackActions = __webpack_require__(190);
+	
+	var TrackPlayer = React.createClass({
+	  displayName: 'TrackPlayer',
+	
+	  play: function () {
+	    this.props.track.play();
+	  },
+	  delete: function () {
+	    TrackActions.deleteTrack(this.props.track);
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'span',
+	        { className: 'track' },
+	        this.props.track.name
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.play },
+	        'Play'
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.delete },
+	        'Delete'
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = TrackPlayer;
 
 /***/ }
 /******/ ]);

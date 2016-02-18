@@ -38,6 +38,21 @@
   color: red;
 }
 
+.jukebox {
+  background-color: green;
+  width: 300px;
+  height: auto;
+  padding: 20px;
+  border: 1px solid gold;
+  margin-top: 10px;
+}
+
+.track {
+  color: white;
+  font-family: monospace;
+  margin-right: 5px;
+}
+
 body {
   background-color: #111;
 }
