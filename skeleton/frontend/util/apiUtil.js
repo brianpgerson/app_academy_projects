@@ -9,6 +9,24 @@ var serverPokemonApi = {
         PokemonActions.receiveAllPokemons(data);
       }
     );
+  },
+  fetchSinglePokemon: function(id) {
+    $.get(
+      "api/pokemon/" + id,
+      {},
+      function(data) {
+        PokemonActions.receiveSinglePokemon(data);
+      }
+    );
+  },
+  createPokemon: function(newObj){
+    $.post(
+      "/api/pokemon",
+      newObj,
+      function(response){
+        PokemonActions.receiveSinglePokemon(response);
+      }
+    );
   }
 };
 

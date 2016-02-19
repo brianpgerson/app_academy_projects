@@ -1,4 +1,5 @@
 class Api::ToysController < ApplicationController
+
   def update
     @toy = Toy.find(params[:id])
     if @toy.update(toy_params)
@@ -14,4 +15,3 @@ class Api::ToysController < ApplicationController
     params.require(:toy).permit(:happiness, :name, :pokemon_id, :price)
   end
 end
-

@@ -1,22 +1,34 @@
 var React = require('react');
 var Pokemart = require('../stores/pokemon');
+var serverPokemonApi = require('../util/apiUtil.js');
+var ToysIndex = require('./toysIndex');
+
 
 var PokemonDetail = React.createClass({
   getInitialState: function(){
     return({
-      pokemon: this.getStateFromStore(parseInt(this.props.params.pokemonId))
+      pokemon: null
     });
   },
   getStateFromStore: function(toFindId){
-    return Pokemart.find(toFindId); // TODO need to parse int?
+    return Pokemart.find(toFindId);
+  },
+  componentDidMount: function() {
+    this.changeToken = Pokemart.addListener(this._onChange);
+    serverPokemonApi.fetchSinglePokemon(this.props.params.pokemonId);
   },
   componentWillReceiveProps: function(newProps){
-    this.setState({pokemon: this.getStateFromStore(parseInt(newProps.params.pokemonId))});
+    serverPokemonApi.fetchSinglePokemon(newProps.params.pokemonId);
+  },
+  componentWillUnmount: function() {
+    this.changeToken.remove();
+  },
+  _onChange: function() {
+    this.setState({pokemon: this.getStateFromStore(parseInt(this.props.params.pokemonId))});
   },
   render: function(){
-    // TODO ask about image_url
-
     var pokeAttributes;
+    var toyAttributes;
     if (this.state.pokemon) {
       pokeAttributes = (
         <ul>
@@ -27,16 +39,25 @@ var PokemonDetail = React.createClass({
           <li><img src={this.state.pokemon.image_url} /></li>
         </ul>
       );
+      toyAttributes = (
+        <ToysIndex toys={this.state.pokemon.toys} />
+      );
     } else {
       pokeAttributes = "no pokemon :(";
+      toyAttributes = "no toys :(";
     }
-
     return (
       <div>
         <div className="pokemon-detail-pane">
           <div className="detail">
             {pokeAttributes}
           </div>
+          <div>
+            {toyAttributes}
+          </div>
+        </div>
+        <div className="toy-detail-pane">
+          {this.props.children}
         </div>
       </div>
     );

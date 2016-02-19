@@ -5,10 +5,14 @@ var PokemonConstants = require('../constants/pokemonConstants');
 var Pokemart = new Store(PokemonDispatcher);
 var _pokemons = {};
 
+function resetPokemon(pokemon) {
+  _pokemons[pokemon.id] = pokemon;
+}
+
 function resetPokemons(pokemons) {
   _pokemons = {};
   pokemons.forEach(function(pokemon, i) {
-    _pokemons[pokemon.id] = pokemon;
+    resetPokemon(pokemon);
   });
 }
 
@@ -23,7 +27,7 @@ Pokemart.all = function() {
 };
 
 Pokemart.find = function(id){
-  // TODO do we also want to reset _pokemons here?
+
   return _pokemons[id];
 };
 
@@ -33,8 +37,11 @@ Pokemart.__onDispatch = function(payload) {
     resetPokemons(payload.pokemen);
     this.__emitChange();
     break;
+  case PokemonConstants.POKEMON_RECEIVED:
+    resetPokemon(payload.pokemon);
+    this.__emitChange();
+    break;
   }
-
 };
 
 module.exports = Pokemart;
