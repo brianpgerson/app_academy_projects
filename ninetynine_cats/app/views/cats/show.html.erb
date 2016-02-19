@@ -1,0 +1,35 @@
+<h1> <%= @cat.name %> </h1>
+
+<h2> Cat Info: </h2>
+
+<ul>
+  <% @cat.attributes.each do |attribute, value| %>
+    <% next if ['created_at', 'updated_at', 'id'].include?(attribute) %>
+    <li><%= attribute %>: <%= value %></li>
+  <% end %>
+
+
+ </ul>
+
+  <%= link_to "Edit Cat!", edit_cat_url, method: :get%>
+
+ <h2> Cat Requests: </h2>
+
+<ol>
+ <% @cat_rental_requests.each do |crr| %>
+  <li>Rental Request: <%= crr.start_date %> through <%= crr.end_date %> </li>
+  <% if crr.pending? %>
+    <form action="<%= approval_url %>" method="post">
+      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="crr_id" value="<%= crr.id %>">
+      <input type="submit" name="approve" value="Approve">
+    </form>
+    <form action="<%= denial_url %>" method="post">
+      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="crr_id" value="<%= crr.id %>">
+      <input type="submit" name="deny" value="Deny">
+    </form>
+   <% end %>
+ <% end %>
+</ol>
+ <%= link_to "Back to cats!", cats_url, method: :get%>
