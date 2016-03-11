@@ -23,6 +23,43 @@ class Board
       ]
   end
 
+
+  def dup_self
+    new_board = Board.new(false)
+    new_board.grid.map!.with_index do |row, i|
+      row.map.with_index do |pos, j|
+        pos = self[[i, j]].class.new([i,j], new_board, self[[i, j]].color)
+      end
+    end
+    new_board
+  end
+
+  def all_pieces_of_a_color(color)
+    #TODO maybe just one condition here?
+    @grid.flatten.select { |piece| piece.color == color && piece.color != nil }
+  end
+
+  def get_king(color)
+    all_pieces_of_a_color(color).select { |piece| piece.class == King }.first
+  end
+
+  def board_in_check_for(color)
+    opponent_color = color == :black ? :white : :black
+    all_moves = []
+    all_pieces_of_a_color(opponent_color).each { |piece| all_moves += piece.moves }
+    all_moves.include?(get_king(color).position)
+  end
+
+  def checkmate_for(color)
+    remaining_moves = []
+
+    all_pieces_of_a_color(color).each do |piece|
+      remaining_moves += piece.valid_moves
+    end
+
+    remaining_moves.empty?
+  end
+
   def populate
     @grid.map!.with_index do |row, i|
       row.map.with_index do |space, j|
@@ -42,41 +79,24 @@ class Board
     end
   end
 
-  def get_object_at_pos(pos)
+  def [](pos)
     row, col = pos
     @grid[row][col]
   end
 
-  def place_piece(pos, piece)
+  def []=(pos, piece)
     row, col = pos
     @grid[row][col] = piece
   end
 
   def in_bounds?(pos)
-    pos.all? { |x| x.between?(0, @grid.length - 1) }
-  end
-
-  def rows
-    @grid
-  end
-
-  def move()
-
+    pos[0].between?(0, 7) && pos[1].between?(0, 7)
   end
 
   def move!(old_pos, new_pos, selected_piece)
-    place_piece(new_pos, selected_piece)
+    self[new_pos] = selected_piece
     selected_piece.position = new_pos
-    place_piece(old_pos, NullPiece.new(old_pos, @board, nil))
+    self[old_pos] = NullPiece.new(old_pos, self, nil)
   end
 
 end
-
-# if __FILE__ == $PROGRAM_NAME
-#   board = Board.new
-#   board.populate
-#   board.grid[4][4] = Rook.new([4,4], board)
-#   display = Display.new(board)
-#   display.render
-#
-# end

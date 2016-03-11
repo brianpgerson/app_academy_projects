@@ -1,13 +1,18 @@
 module SteppingMoves
-  def filtered_steps(moves, original_obj)
-    filtered_moves = []
-    moves.each do |pos|
-      row, col = pos[0], pos[1]
-      obj = original_obj.board.grid[row][col]
-      if obj.color.nil? || obj.color != original_obj.color
-        filtered_moves << pos
+
+  def moves
+    current_x, current_y = @position
+    possible_moves = []
+    move_deltas.each do |step|
+      next_pos = [current_x + step[0], current_y + step[1]]
+      if @board.in_bounds?(next_pos)
+        if @board[next_pos].color.nil? || @board[next_pos].color != self.color
+          possible_moves << next_pos
+        end
       end
     end
-    filtered_moves
+
+    possible_moves
   end
+
 end

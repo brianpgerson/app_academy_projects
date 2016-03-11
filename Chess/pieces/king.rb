@@ -1,5 +1,4 @@
 require_relative "pieces"
-require "byebug"
 
 class King < Piece
   include SteppingMoves
@@ -9,24 +8,17 @@ class King < Piece
     @value = " ♚ "
   end
 
-  def moves
-    row, col = @position
-    n = @board.grid.length - 1
-    possible_moves = []
-    [-1, 0, 1].each do |delta_row|
-      [-1, 0, 1].each do |delta_col|
-        possible_moves << [row + delta_row, col + delta_col]
-      end
-    end
-
-    possible_moves.select do |pos|
-      @board.in_bounds?(pos) && pos != @position
-    end
-
-  end
-
-  def valid_moves
-    filtered_steps(moves, self)
+  def move_deltas
+    [
+      [1, 1],
+      [0, 1],
+      [1, 0],
+      [-1, 1],
+      [1, -1],
+      [-1, 0],
+      [0, -1],
+      [-1, -1]
+    ]
   end
 
 end

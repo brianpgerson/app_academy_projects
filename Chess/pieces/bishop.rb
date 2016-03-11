@@ -8,18 +8,9 @@ class Bishop < Piece
     @value = " ♝ "
   end
 
-  def moves
-    row, col = @position
-    n = @board.grid.length - 1
 
-    diagonal(row, col, n).select do |pos|
-      @board.in_bounds?(pos) && pos != @position
-    end
-
+  def directions
+    diagonals
   end
-
-  def valid_moves
-    filtered_diagonal(moves, self)
-  end
-
+  
 end

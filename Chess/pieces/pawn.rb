@@ -10,59 +10,49 @@ class Pawn < Piece
     @first_move = @initial_row == position[0]
   end
 
-  def moves
+  def all_moves
     row, col = @position
-    n = @board.grid.length - 1
-    if @initial_row == 1
-      possible_moves = {
-        first_move: [row + 2, col],
-        standard_move: [row + 1, col],
-        right_kill: [row + 1, col + 1],
-        left_kill: [row + 1, col - 1]
-      }
-    elsif @initial_row == 6
-      possible_moves = {
-        first_move: [row - 2, col],
-        standard_move: [row - 1, col],
-        right_kill: [row - 1, col + 1],
-        left_kill: [row - 1, col - 1]
-      }
+    if color == :black
+      move, long_move = 1, 2
+    else
+      move, long_move = -1, -2
     end
-    possible_moves.select do |key, pos|
-      @board.in_bounds?(pos) && pos != @position
-    end
+
+    possible_moves = {
+      first_move: [row + long_move, col],
+      standard_move: [row + move, col],
+      right_kill: [row + move, col + 1],
+      left_kill: [row + move, col - 1]
+    }
+    possible_moves.select { |key, pos| @board.in_bounds?(pos) && pos != @position }
   end
 
-  def valid_moves
-    curr_row, curr_col = @position
+  def moves
     filtered_moves = []
     #first move
     if @first_move
-      first_move_pos = moves[:first_move]
-      if @board.grid[first_move_pos[0]][first_move_pos[1]].color.nil?
+      first_move_pos = all_moves[:first_move]
+      if @board[first_move_pos].colorless?
         filtered_moves << first_move_pos
       end
     end
-    #kill moves
-    kill_moves = [moves[:right_kill], moves[:left_kill]]
-    filtered_moves.concat(kill_moves.select do |pos|
+    # kill moves
+    kill_moves = [all_moves[:right_kill], all_moves[:left_kill]]
+    kill_moves.each do |pos|
       unless pos.nil?
-        row, col = pos
-        piece_color = @board.grid[row][col].color
-        !piece_color.nil? && piece_color != @color
+        if !@board[pos].color.nil? && @board[pos].color != @color
+          filtered_moves << pos
+        end
       end
-      end)
+    end
     #standard move
-    if @board.grid[moves[:standard_move][0]][moves[:standard_move][1]].color.nil?
-      filtered_moves << moves[:standard_move]
+
+    if @board[all_moves[:standard_move]].colorless?
+      filtered_moves << all_moves[:standard_move]
     end
 
-    @first_move = false
-
     filtered_moves
-
   end
-
 
 
 

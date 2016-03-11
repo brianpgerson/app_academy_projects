@@ -9,17 +9,8 @@ class Rook < Piece
     @value = " ♜ "
   end
 
-  def moves
-    row, col = @position
-    n = @board.grid.length - 1
-
-    lateral(row, col, n).select do |pos|
-      @board.in_bounds?(pos) && pos != @position
-    end
-  end
-
-  def valid_moves
-    filtered_lateral(moves, self)
+  def directions
+    vert_lats
   end
 
 end
